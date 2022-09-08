@@ -4,6 +4,10 @@ const StateModel = require('../models/State.js');
 const PublisherModel = require('../models/Publisher');
 const BookModel = require('../models/Book');
 const CategoryModel = require('../models/Category');
+const createlogs = require('./logs');
+
+
+
 
 class BooksController {
 
@@ -87,6 +91,7 @@ class BooksController {
             const data = await this._validateData(req.body);
             const book = await BookModel.create(data);
             res.json(book);
+            createlogs('Create Book')
         } catch (error) {
             res.status(400).json({ error: error.message });
         }
@@ -106,6 +111,7 @@ class BooksController {
                     id: id
                 }
             });
+            createlogs('Update Book')
             res.json(await BookModel.findByPk(id));
         } catch (error) {
             res.status(400).json({ error: error.message });
@@ -118,6 +124,7 @@ class BooksController {
                 id: req.params.bookId
             }
         });
+        createlogs('Delete Book')
         res.json({});
     }
 

@@ -43,7 +43,7 @@ const bookCreate = () => {
         PublisherId: publisher,
     })
         .then((response) => {
-            Swal.fire(`Book ${response.data.name} created`);
+            Swal.fire(`Book ${response.data.title} created`);
             loadTable();
         }, (error) => {
             Swal.fire(`Error to create book: ${error.response.data.error} `)
@@ -75,7 +75,7 @@ const bookEdit = () => {
 
     })
         .then((response) => {
-            Swal.fire(`Book ${response.data.name} updated`);
+            Swal.fire(`Book ${response.data.title} updated`);
             loadTable();
         }, (error) => {
             Swal.fire(`Error to update book: ${error.response.data.error} `)
@@ -90,7 +90,7 @@ const bookDelete = async (id) => {
     const data = book.data;
     axios.delete(`${ENDPOINT}/books/` + id)
         .then((response) => {
-            Swal.fire(`Book ${data.name} deleted`);
+            Swal.fire(`Book ${data.title} deleted`);
             loadTable();
         }, (error) => {
             Swal.fire(`Error to delete book: ${error.response.data.error} `);
@@ -139,7 +139,8 @@ const showBookEditBox = async (id) => {
             publishers,
         focusConfirm: false,
         showCancelButton: true,
-        preConfirm: () => { console.log(y)
+        preConfirm: () => { 
+            bookEdit();
         }
     });
 

@@ -1,6 +1,6 @@
 const { Op } = require('sequelize');
 const StateModel = require('../models/State.js');
-
+const createlogs = require('./logs');
 class StateController {
 
     index = async (req, res, next) => {
@@ -37,7 +37,8 @@ class StateController {
       try {
         const data = await this._validateData(req.body);
         const state = await StateModel.create(data);
-        res.json(state);
+        createlogs("Create State")
+        res.json(state);      
       } catch (error) {
         res.status(400).json({ error: error.message });
       }
@@ -57,6 +58,7 @@ class StateController {
             id: id
           }
         });
+        createlogs("Update State")
         res.json(await StateModel.findByPk(id));
       } catch (error) {
         res.status(400).json({ error: error.message });
@@ -69,6 +71,7 @@ class StateController {
           id: req.params.stateId
         }
       });
+      createlogs("Delete State")
       res.json({});
     }
   

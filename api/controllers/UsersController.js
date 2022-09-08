@@ -1,6 +1,7 @@
 const { Op } = require('sequelize');
 const UserModel = require('../models/User');
 const md5 = require('md5');
+const createlogs = require('./logs');
 class UsersController {
 
 index = async (req, res, next) => {
@@ -55,6 +56,7 @@ index = async (req, res, next) => {
       const data = await this._validateData(req.body);
       data.password = md5(data.password);
       const user = await UserModel.create(data);
+      createlogs("Create User")
       res.json(user);
     } catch (error) {
       res.status(400).json({ error: error.message });
@@ -75,6 +77,7 @@ index = async (req, res, next) => {
           id: id
         }
       });
+      createlogs("Update User")
       res.json(await UserModel.findByPk(id));
     } catch (error) {
       res.status(400).json({ error: error.message });
@@ -87,6 +90,7 @@ index = async (req, res, next) => {
         id: req.params.userId
       }
     });
+    createlogs("Delete User")
     res.json({});
   }
 

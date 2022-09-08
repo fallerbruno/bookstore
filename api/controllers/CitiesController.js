@@ -1,6 +1,7 @@
 const { Op } = require('sequelize');
 const StateModel = require('../models/State.js');
 const CityModel = require('../models/City.js');
+const createlogs = require('./logs');
 
 
 class CitiesController {
@@ -35,6 +36,7 @@ class CitiesController {
             attributes: ['name', 'province']
         }]
       });
+     
       res.json(city);
     }
     
@@ -42,6 +44,7 @@ class CitiesController {
       try {
         const data = await this._validateData(req.body);
         const city = await CityModel.create(data);
+        createlogs("Create City")
         res.json(city);
       } catch (error) {
         res.status(400).json({ error: error.message });
@@ -62,6 +65,7 @@ class CitiesController {
             id: id
           }
         });
+        createlogs("Update City")
         res.json(await CityModel.findByPk(id));
       } catch (error) {
         res.status(400).json({ error: error.message });
@@ -74,6 +78,7 @@ class CitiesController {
           id: req.params.cityId
         }
       });
+      createlogs("Delete City")
       res.json({});
     }
   

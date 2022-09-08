@@ -2,7 +2,7 @@ const { Op } = require('sequelize');
 const CityModel = require('../models/City');
 const StateModel = require('../models/State.js');
 const PublisherModel = require('../models/Publisher');
-
+const createlogs = require('./logs');
 
 class PublishersController {
 
@@ -44,6 +44,7 @@ class PublishersController {
     try {
       const data = await this._validateData(req.body);
       const publisher = await PublisherModel.create(data);
+      createlogs("Create Publisher")
       res.json(publisher);
     } catch (error) {
       res.status(400).json({ error: error.message });
@@ -64,6 +65,7 @@ class PublishersController {
           id: id
         }
       });
+      createlogs("Update Publisher")
       res.json(await PublisherModel.findByPk(id));
     } catch (error) {
       res.status(400).json({ error: error.message });
@@ -76,6 +78,7 @@ class PublishersController {
         id: req.params.publisherId
       }
     });
+    createlogs("Delete Publisher")
     res.json({});
   }
 
