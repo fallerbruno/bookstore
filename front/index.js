@@ -1,27 +1,27 @@
 const ENDPOINT = "http://localhost:3000";
 
-const validateUser = (login, password) => {
-    let validate = false;
-    axios.get(`${ENDPOINT}/users`)
-        .then((response) => {
-            if (response.status === 200) {
-                const data = response.data;
-                data.forEach(user => {
-                    console.log(user.email);
-                    if (user.email == login && user.password == MD5(password)) {
-                        window.open(`./menu/index.html`,'_self');
-                        validate = true;
-                    }
-                });
-                if (validate === false) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Something went wrong!',
-                        preConfirm: () => {
-                        }
-                    })
-                }
+const validateUser = () => {
+    const email = document.getElementById("email").value
+    let password = document.getElementById("password").value
+    password = MD5(password);
+
+    axios.post(`${ENDPOINT}/validateUser`, {
+        email: email,
+        password: password
+    }).then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+            const data = response.data;
+            if (data > 0) {
+                window.open(`./menu/index.html`, '_self');
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Email or Password is incorrect',
+                    preConfirm: () => { }
+                })
             }
-        })
-};
+        }
+    })
+}

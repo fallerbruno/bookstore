@@ -10,6 +10,17 @@ const validateUserId = async (req, res, next) => {
   next();
 }
 
+const validateUser = async (req, res, next) => {
+  const count = await UserModel.count({
+    where: {
+            email: req.body.email,
+            password: req.body.password
+          }
+          
+  });
+  res.json(count);
+}
+
 router.get('/users', usersController.index);
 
 router.post('/users', usersController.create);
@@ -19,5 +30,7 @@ router.get('/users/:userId', validateUserId, usersController.show);
 router.put('/users/:userId', validateUserId, usersController.update);
 
 router.delete('/users/:userId', validateUserId, usersController.delete);
+
+router.post('/validateUser', validateUser);
 
 module.exports = router;

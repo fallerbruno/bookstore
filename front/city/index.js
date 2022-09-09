@@ -1,4 +1,4 @@
-const ENDPOINT = "http://localhost:3000";
+const ENDPOINT = "https://bookstore.fallerbruno.com.br/";
 
 const loadTable = () => {
     axios.get(`${ENDPOINT}/cities`)
