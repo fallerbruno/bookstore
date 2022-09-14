@@ -18,6 +18,7 @@ const loadTable = () => {
                     trHTML += '<td>' + element.Publisher.name + '</td>';
                     trHTML += '<td>' + element.Category.description + '</td>';
                     trHTML += '<td>' + element.value + '</td>';
+                    trHTML += '<td>' + element.Format.description + '</td>';
                     trHTML += '<td><i class="fa-sharp fa-solid fa-pen-to-square text-primary " onclick="showBookEditBox(' + element.id + ')"></i>';
                     trHTML += '<i class="fa-solid fa-xmark text-danger" onclick="bookDelete(' + element.id + ')"></i></td>';
                     trHTML += "</tr>";
@@ -37,6 +38,7 @@ const bookCreate = () => {
     const publisher = document.getElementById("select-publisher").value;
     const category = document.getElementById("select-category").value;
     const value = document.getElementById("value").value;
+    const format = document.getElementById("format").value;
     axios.post(`${ENDPOINT}/books`, {
         title: title,
         author: author,
@@ -44,6 +46,7 @@ const bookCreate = () => {
         pages: pages,
         CategoryId: category,
         PublisherId: publisher,
+        FormatId: format,
         value: value,
     })
         .then((response) => {
@@ -70,6 +73,7 @@ const bookEdit = () => {
     const publisher = document.getElementById("select-publisher").value;
     const category = document.getElementById("select-category").value;
     const value = document.getElementById("value").value;
+    const format = document.getElementById("format").value;
     axios.put(`${ENDPOINT}/books/` + id, {
         title: title,
         author: author,
@@ -78,13 +82,14 @@ const bookEdit = () => {
         CategoryId: category,
         PublisherId: publisher,
         value: value,
+        FormatId: format
 
     })
         .then((response) => {
             Swal.fire(`Book ${response.data.title} updated`);
             loadTable();
         }, (error) => {
-            Swal.fire(`Error to update book: ${error.response.data.error} `)
+                Swal.fire(`Error to update book: ${error.response.data.error} `)
                 .then(() => {
                     showBookEditBox(id);
                 })
@@ -107,6 +112,7 @@ const bookDelete = async (id) => {
 const showBookCreateBox = async () => {
     const publishers = await publisher()
     const categories = await category()
+    const formats = await format();
     Swal.fire({
         title: 'Create Book',
         html:
@@ -117,7 +123,8 @@ const showBookCreateBox = async () => {
             '<input id="pages" class="swal2-input" placeholder="Pages">' +
             '<input id="value" class="swal2-input" placeholder="Value">' +
             categories +
-            publishers,
+            publishers+
+            formats,
         focusConfirm: false,
         showCancelButton: true,
         preConfirm: () => {
@@ -130,6 +137,7 @@ const showBookCreateBox = async () => {
 const showBookEditBox = async (id) => {
     const publishers = await publisher()
     const categories = await category()
+    const formats = await format();
     const book = await getBook(id);
     const data = book.data;
     console.log(data);
@@ -143,7 +151,8 @@ const showBookEditBox = async (id) => {
             '<input id="pages" class="swal2-input" value=' + data.pages + '>' +
             '<input id="value" class="swal2-input" value=' + data.value + '">' +
             categories +
-            publishers,
+            publishers+
+            formats,
         focusConfirm: false,
         showCancelButton: true,
         preConfirm: () => {
@@ -170,6 +179,16 @@ const category = async () => {
     let select = "<select id='select-category' class='w-75 h-40 swal2-select'>"
     categories.forEach((category) => {
         select += `<option  class="swal2-select" value="${category.id}">${category.description}</option>`
+    })
+    select += `</select>`;
+    return select;
+}
+const format = async () => {
+    const data = await axios.get(`${ENDPOINT}/formats`);
+    const formats = data.data
+    let select = "<select id='select-format' class='w-75 h-40 swal2-select'>"
+    formats.forEach((format) => {
+        select += `<option  class="swal2-select" value="${format.id}">${format.description}</option>`
     })
     select += `</select>`;
     return select;
