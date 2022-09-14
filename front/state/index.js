@@ -11,8 +11,8 @@ const loadTable = () => {
                     trHTML += '<td>' + element.id + '</td>';
                     trHTML += '<td>' + element.name + '</td>';
                     trHTML += '<td>' + element.province + '</td>';
-                    trHTML += '<td><button type="button" class="btn btn-outline-secondary" onclick="showStateEditBox(' + element.id + ')">Edit</button>';
-                    trHTML += '<button type="button" class="btn btn-outline-danger" onclick="stateDelete(' + element.id + ')">Del</button></td>';
+                    trHTML += '<td><i class="fa-sharp fa-solid fa-pen-to-square text-primary " onclick="showStateEditBox(' + element.id + ')"></i>';
+                    trHTML += '<i class="fa-solid fa-xmark text-danger" onclick="stateDelete(' + element.id + ')"></i></td>';
                     trHTML += "</tr>";
                 });
                 document.getElementById("mytable").innerHTML = trHTML;

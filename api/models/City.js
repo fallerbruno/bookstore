@@ -15,13 +15,16 @@ City.init({
         type: DataTypes.STRING,
         allowNull: false
     },
+    cep: {
+        type: DataTypes.INTEGER,
+    }
 },{
     sequelize: db,
     tableName: 'cities',
     modelName: 'City',
 })
 
+
 State.hasMany(City);
 City.belongsTo(State);
-
 module.exports = City;

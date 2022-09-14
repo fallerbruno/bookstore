@@ -5,6 +5,7 @@ const PublisherModel = require('../models/Publisher');
 const BookModel = require('../models/Book');
 const CategoryModel = require('../models/Category');
 const createlogs = require('./logs');
+const Logs = require('../models/Logs');
 
 
 
@@ -56,6 +57,27 @@ class BooksController {
                 where.publication_year = {};
             }
             where.publication_year[Op.lte] = params.max_publication_year;
+        }
+
+        if (params.category) {
+            let cat = await CategoryModel.findOne({
+                where: { description: params.category }
+            })
+            cat = cat.getDataValue('id');
+            where.CategoryId = cat
+        }
+
+        if (params.min_value) {
+            where.value = {
+                [Op.gte]: params.min_value
+            };
+        }
+
+        if (params.max_value) {
+            if (!where.value) {
+                where.value = {};
+            }
+            where.value[Op.lte] = params.max_value;
         }
 
         const book = await BookModel.findAll({
@@ -129,11 +151,14 @@ class BooksController {
     }
 
     _validateData = async (data, id) => {
-        const attributes = ['title', 'author', 'publication_year', 'pages', 'CategoryId', 'PublisherId'];
+        const attributes = ['title', 'author', 'publication_year', 'pages', 'CategoryId', 'PublisherId', 'value'];
         const book = {};
         for (const attribute of attributes) {
             if (!data[attribute]) {
                 throw new Error(`The attribute "${attribute}" is required.`);
+            }
+            if (data.value < 0) {
+                throw new Error(`The attribute "Value" can't be lower then 0,00.`);
             }
             book[attribute] = data[attribute];
         }

@@ -13,8 +13,8 @@ const loadTable = () => {
                     trHTML += '<td>' + element.age + '</td>';
                     trHTML += '<td>' + element.sex + '</td>';
                     trHTML += '<td>' + element.email + '</td>';
-                    trHTML += '<td><button type="button" class="btn btn-outline-secondary" onclick="showUserEditBox(' + element.id + ')">Edit</button>';
-                    trHTML += '<button type="button" class="btn btn-outline-danger" onclick="userDelete(' + element.id + ')">Del</button></td>';
+                    trHTML += '<td><i class="fa-sharp fa-solid fa-pen-to-square text-primary " onclick="showUserEditBox(' + element.id + ')"></i>';
+                    trHTML += '<i class="fa-solid fa-xmark text-danger" onclick="userDelete(' + element.id + ')"></i></td>';
                     trHTML += "</tr>";
                 });
                 document.getElementById("mytable").innerHTML = trHTML;

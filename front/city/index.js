@@ -1,4 +1,4 @@
-const ENDPOINT = "https://bookstore.fallerbruno.com.br/";
+const ENDPOINT = "http://localhost:3000";
 
 const loadTable = () => {
     axios.get(`${ENDPOINT}/cities`)
@@ -10,10 +10,11 @@ const loadTable = () => {
                     trHTML += '<tr>';
                     trHTML += '<td>' + element.id + '</td>';
                     trHTML += '<td>' + element.name + '</td>';
+                    trHTML += '<td>' + element.cep + '</td>';
                     trHTML += '<td>' + element.State.name + '</td>';
                     trHTML += '<td>' + element.State.province + '</td>';
-                    trHTML += '<td><button type="button" class="btn btn-outline-secondary" onclick="showCityEditBox(' + element.id + ')">Edit</button>';
-                    trHTML += '<button type="button" class="btn btn-outline-danger" onclick="cityDelete(' + element.id + ')">Del</button></td>';
+                    trHTML += '<td><i class="fa-sharp fa-solid fa-pen-to-square text-primary " onclick="showCityEditBox(' + element.id + ')"></i>';
+                    trHTML += '<i class="fa-solid fa-xmark text-danger" onclick="cityDelete(' + element.id + ')"></i></td>';
                     trHTML += "</tr>";
                 });
                 document.getElementById("mytable").innerHTML = trHTML;
@@ -26,9 +27,11 @@ loadTable();
 const cityCreate = () => {
     const name = document.getElementById("name").value;
     const StateId = document.getElementById("select").value;
+    const cep = document.getElementById("cep").value;
     axios.post(`${ENDPOINT}/cities`, {
         name: name,
         StateId: StateId,
+        cep: cep,
     })
         .then((response) => {
             Swal.fire(`City ${response.data.name} created`);
@@ -85,6 +88,7 @@ const showCityCreateBox  = async () => {
         html:
             '<input id="id" type="hidden">' +
             '<input id="name" class="swal2-input" placeholder="Name">' +
+            '<input id="cep" class="swal2-input" placeholder="CEP">' +
            state,
         focusConfirm: false,
         showCancelButton: true,
