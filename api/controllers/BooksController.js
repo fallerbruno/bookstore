@@ -4,8 +4,9 @@ const StateModel = require('../models/State.js');
 const PublisherModel = require('../models/Publisher');
 const BookModel = require('../models/Book');
 const CategoryModel = require('../models/Category');
+const FormatModel = require('../models/Format');
 const createlogs = require('./logs');
-const Logs = require('../models/Logs');
+
 
 
 
@@ -90,6 +91,11 @@ class BooksController {
                 requried: false,
                 attributes: ['description'],
             }, {
+                model: FormatModel,
+                requried: false,
+                attributes: ['description'],
+            },
+            {
                 model: PublisherModel,
                 requried: false,
                 attributes: ['name'],
@@ -151,7 +157,7 @@ class BooksController {
     }
 
     _validateData = async (data, id) => {
-        const attributes = ['title', 'author', 'publication_year', 'pages', 'CategoryId', 'PublisherId', 'value'];
+        const attributes = ['title', 'author', 'publication_year', 'pages', 'CategoryId', 'PublisherId', 'value', 'FormatId'];
         const book = {};
         for (const attribute of attributes) {
             if (!data[attribute]) {

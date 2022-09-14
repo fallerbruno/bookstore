@@ -38,7 +38,7 @@ const bookCreate = () => {
     const publisher = document.getElementById("select-publisher").value;
     const category = document.getElementById("select-category").value;
     const value = document.getElementById("value").value;
-    const format = document.getElementById("format").value;
+    const format = document.getElementById("select-format").value;
     axios.post(`${ENDPOINT}/books`, {
         title: title,
         author: author,
@@ -73,7 +73,7 @@ const bookEdit = () => {
     const publisher = document.getElementById("select-publisher").value;
     const category = document.getElementById("select-category").value;
     const value = document.getElementById("value").value;
-    const format = document.getElementById("format").value;
+    const format = document.getElementById("select-format").value;
     axios.put(`${ENDPOINT}/books/` + id, {
         title: title,
         author: author,
